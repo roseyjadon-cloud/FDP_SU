@@ -1,0 +1,37 @@
+:root{
+  --bg:#f4f7fb;
+  --card:#ffffff;
+  --accent:#2563eb;
+  --muted:#6b7280;
+  --danger:#ef4444;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;
+  background:linear-gradient(180deg,var(--bg),#eef2ff);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+.container{width:100%;max-width:420px}
+.login-card{
+  background:var(--card);
+  border-radius:12px;
+  padding:28px 24px;
+  box-shadow:0 6px 24px rgba(37,99,235,0.08);
+  border:1px solid rgba(2,6,23,0.04);
+}
+.login-card h1{margin:0 0 18px;font-size:20px}
+label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+input[type=email],input[type=password]{
+  width:100%;padding:10px 12px;border-radius:8px;border:1px solid #e6e9ef;font-size:15px;
+}
+.pw-row{display:flex;gap:8px;align-items:center}
+#togglePassword{background:none;border:0;color:var(--accent);padding:8px 10px;border-radius:8px;cursor:pointer}
+.actions{display:flex;align-items:center;justify-content:space-between;margin-top:14px}
+button[type=submit]{background:var(--accent);color:#fff;border:0;padding:10px 14px;border-radius:8px;cursor:pointer}
+.error{color:var(--danger);font-size:13px;height:18px;margin-top:10px}
+@media (max-width:420px){.login-card{padding:20px}}
