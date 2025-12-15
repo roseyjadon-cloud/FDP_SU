@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Sign in — Shopping App</title>
+    <style>
+        :root{
+            --bg:#f5f7fb; --card:#fff; --accent:#2563eb; --muted:#6b7280;
+            --danger:#dc2626; font-family:Inter,Segoe UI,system-ui,Arial,sans-serif;
+        }
+        html,body{height:100%}
+        body{
+            margin:0; background:linear-gradient(180deg,#eef2ff 0%,var(--bg) 100%);
+            display:grid; place-items:center; padding:32px;
+        }
+        .card{
+            width:100%; max-width:420px; background:var(--card); border-radius:12px;
+            box-shadow:0 6px 24px rgba(16,24,40,0.08); padding:28px; box-sizing:border-box;
+        }
+        .logo{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+        .mark{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#7c3aed);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
+        h1{font-size:18px;margin:0 0 6px}
+        p.subtitle{margin:0;margin-bottom:18px;color:var(--muted);font-size:13px}
+        form{display:grid;gap:12px}
+        label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+        input[type="text"],input[type="email"],input[type="password"]{
+            width:100%; padding:10px 12px; border:1px solid #e6e9ef; border-radius:8px; font-size:14px;
+            box-sizing:border-box; outline:none;
+        }
+        input:focus{border-color:rgba(37,99,235,0.6); box-shadow:0 0 0 4px rgba(37,99,235,0.06)}
+        .row{display:flex;align-items:center;justify-content:space-between}
+        .checkbox{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+        .link{font-size:13px;color:var(--accent); text-decoration:none}
+        button[type="submit"]{
+            width:100%; background:var(--accent); color:#fff; border:0; padding:11px;border-radius:10px;
+            font-size:15px; cursor:pointer;
+        }
+        .note{font-size:13px;color:var(--muted);text-align:center;margin-top:12px}
+        .error{color:var(--danger);font-size:13px;margin-top:6px}
+        .pw-toggle{background:transparent;border:0;color:var(--muted);cursor:pointer;padding:6px;border-radius:6px}
+        .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+        @media (max-width:420px){ .card{padding:20px} }
+    </style>
+</head>
+<body>
+    <main class="card" aria-labelledby="signin-title">
+        <div class="logo">
+            <div class="mark" aria-hidden="true">S</div>
+            <div>
+                <h1 id="signin-title">Sign in to Shopping App</h1>
+                <p class="subtitle">Enter your account credentials to continue</p>
+            </div>
+        </div>
+
+        <form id="loginForm" novalidate>
+            <!-- Email / Username -->
+            <div>
+                <label for="identifier">Email or username</label>
+                <input id="identifier" name="identifier" type="text" inputmode="email" autocomplete="username" placeholder="you@example.com" required aria-describedby="identifier-error" />
+                <div id="identifier-error" class="error" role="alert" aria-live="polite" hidden></div>
+            </div>
+
+            <!-- Password with toggle -->
+            <div>
+                <label for="password">Password</label>
+                <div style="display:flex;gap:8px;align-items:center">
+                    <input id="password" name="password" type="password" autocomplete="current-password" required minlength="6" style="flex:1" aria-describedby="password-error" />
+                    <button type="button" id="togglePwd" class="pw-toggle" aria-pressed="false" aria-label="Show password">Show</button>
+                </div>
+                <div id="password-error" class="error" role="alert" aria-live="polite" hidden></div>
+            </div>
+
+            <div class="row">
+                <label class="checkbox"><input type="checkbox" id="remember" name="remember" /> Remember me</label>
+                <a class="link" href="#" id="forgot">Forgot password?</a>
+            </div>
+
+            <button type="submit">Sign in</button>
+
+            <p class="note">Don't have an account? <a class="link" href="#">Create one</a></p>
+        </form>
+    </main>
+
+    <script>
+        // Minimal, accessible client-side validation and UX
+        const form = document.getElementById('loginForm');
+        const idInput = document.getElementById('identifier');
+        const pwInput = document.getElementById('password');
+        const idErr = document.getElementById('identifier-error');
+        const pwErr = document.getElementById('password-error');
+        const toggle = document.getElementById('togglePwd');
+
+        toggle.addEventListener('click', () => {
+            const isHidden = pwInput.type === 'password';
+            pwInput.type = isHidden ? 'text' : 'password';
+            toggle.textContent = isHidden ? 'Hide' : 'Show';
+            toggle.setAttribute('aria-pressed', String(isHidden));
+        });
+
+        function showError(el, msg){
+            el.textContent = msg; el.hidden = false;
+        }
+        function clearError(el){ el.textContent = ''; el.hidden = true; }
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let valid = true;
+            clearError(idErr); clearError(pwErr);
+
+            if (!idInput.value.trim()){
+                showError(idErr, 'Please enter your email or username.');
+                idInput.focus(); valid = false;
+            }
+            if (!pwInput.value || pwInput.value.length < 6){
+                showError(pwErr, 'Password must be at least 6 characters.');
+                if (valid) pwInput.focus();
+                valid = false;
+            }
+            if (!valid) return;
+
+            // Replace this with real submit logic (POST to server)
+            // Here we simulate a successful submission
+            form.querySelector('button[type="submit"]').disabled = true;
+            form.querySelector('button[type="submit"]').textContent = 'Signing in...';
+
+            // Simulate network delay
+            setTimeout(() => {
+                // Example: navigate to dashboard after successful auth
+                window.location.href = '/dashboard.html';
+            }, 700);
+        });
+
+        // Optional: clear errors on input
+        [idInput, pwInput].forEach(inp => {
+            inp.addEventListener('input', () => {
+                if (inp === idInput) clearError(idErr);
+                else clearError(pwErr);
+            });
+        });
+    </script>
+</body>
+</html>
